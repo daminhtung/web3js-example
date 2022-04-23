@@ -2,11 +2,13 @@ import "./App.css"
 import Web3 from "web3"
 import { useEffect, useState } from "react"
 import detectEthereumProvider from "@metamask/detect-provider"
+import { loadContract } from "../utils/contracts"
 
 function App() {
   const [web3API, setWeb3API] = useState({
     provider: null,
     web3: null,
+    contract: null
   })
 
   const [account, setAccount] = useState(null)
@@ -14,10 +16,15 @@ function App() {
   useEffect(() => {
     const loadProvider = async () => {
       const provider = await detectEthereumProvider()
+      const contract = await loadContract("Faucet")
+
+      debugger
+      
       if (provider) {
         setWeb3API({
           web3: new Web3(provider),
           provider,
+          contract
         })
       } else {
         console.error("Please, Install Metamask!")
